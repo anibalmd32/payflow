@@ -4,8 +4,8 @@ WORKDIR $DIR
 
 FROM base AS build
 RUN apk update && apk add --no-cache dumb-init
-COPY package*.json $DIR
-COPY tsconfig.json $DIR
+COPY pf_api/package*.json $DIR
+COPY pf_api/tsconfig*.json $DIR
 COPY pf_api/src $DIR/src
 RUN npm ci
 RUN npm run build && npm prune --production
