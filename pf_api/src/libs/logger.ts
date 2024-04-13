@@ -2,8 +2,11 @@ import { serverConfig } from "../utils/contants"
 
 const { protocol, hostname, port } = serverConfig
 
-const serverListening = () => console.info(`Server running at ${protocol}://${hostname}:${port}`)
+const serverLogger = {
+	devLog: () => console.info(`[DEV] ${protocol}://${hostname}:${port}`),
+	prodLog: () => console.info(`[PROD] Server Online`)
+}
 
 export {
-	serverListening
+	serverLogger
 }

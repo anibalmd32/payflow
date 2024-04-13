@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import { serverConfig, env } from './utils/contants'
 
 // * LIBS
-import { serverListening } from './libs/logger'
+import { serverLogger } from './libs/logger'
 
 // * APP INSTANCE
 const app = express()
@@ -23,4 +23,9 @@ app.get('/api/v1/', (req, res) => {
 })
 
 // * SERVER SETUP
-app.listen(serverConfig, serverListening)
+app.listen(
+	serverConfig,
+	env === 'dev'
+		? serverLogger.devLog
+		: serverLogger.prodLog
+)
