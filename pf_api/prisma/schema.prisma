@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  email    String @unique
+  password String @unique
+
+  Session     Session?
+  Memberships Membership[]
+  UserConfig  UserConfig?
+
+  @@map("users")
+}
+
+model Session {
+  id     Int      @id @default(autoincrement())
+  token  String   @unique
+  sigin  Boolean
+  date   DateTime @default(now())
+  userId Int      @unique @map("user_id")
+
+  User User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  @@map("sessions")
+}
+
+model Membership {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  monthPrice  String  @map("month_price")
+  yearPrice   String  @map("year_price")
+  userId      Int     @map("user_id")
+
+  User         User                @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  Benefits     MembershipBenefit[]
+  Subscription Subscription[]
+
+  @@map("memberships")
+}
+
+model MembershipBenefit {
+  id           Int    @id @default(autoincrement())
+  benefit      String
+  membershipId Int    @map("membership_id")
+
+  Membership Membership @relation(fields: [membershipId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  @@map("membership_benefits")
+}
+
+model Customer {
+  id         Int     @id @default(autoincrement())
+  firstName  String  @map("firts_name")
+  lastName   String  @map("last_name")
+  email      String  @unique
+  country    String?
+  postalCode String? @map("postal_code")
+  address    String?
+  phone      String?
+
+  Subscription Subscription?
+
+  @@map("customers")
+}
+
+model Subscription {
+  id           Int       @id @default(autoincrement())
+  membershipId Int       @map("membership_id")
+  customerId   Int       @unique @map("customer_id")
+  status       String
+  lastPayment  DateTime? @map("last_payment")
+  nextPayment  DateTime  @map("next_payment")
+  freeTrial    Int       @map("free_trial")
+  interval     String
+
+  Membership Membership            @relation(fields: [membershipId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  Customer   Customer              @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  History    SubscriptionHistory[]
+
+  @@map("subscriptions")
+}
+
+model SubscriptionHistory {
+  id             Int      @id @default(autoincrement())
+  subscriptionId Int      @map("subscription_id")
+  total          String
+  date           DateTime @default(now())
+
+  Subscription Subscription   @relation(fields: [subscriptionId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  Invoice      InvoceHistory?
+
+  @@map("subscription_history")
+}
+
+model InvoiceTemplate {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  path String @unique
+
+  InvoiceConfig InvoiceConfig[]
+
+  @@map("invoice_template")
+}
+
+model InvoiceConfig {
+  id          Int     @id @default(autoincrement())
+  logoUrl     String  @default("payflow_default_logo.jpeg") @map("logo_url")
+  serviceName String  @unique @map("service_name")
+  description String?
+  templateId  Int     @map("template_id")
+
+  Template   InvoiceTemplate @relation(fields: [templateId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  Invoces    InvoceHistory[]
+  UserConfig UserConfig?
+
+  @@map("invoice_config")
+}
+
+model InvoceHistory {
+  id              Int    @id @default(autoincrement())
+  purchased       Int    @unique
+  url             String
+  invoiceConfigId Int    @map("invoice_config_id")
+
+  Purchased     SubscriptionHistory @relation(fields: [purchased], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  InvoiceConfig InvoiceConfig       @relation(fields: [invoiceConfigId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  @@map("invoce_history")
+}
+
+model UserConfig {
+  id                Int    @id @default(autoincrement())
+  invoiceConfigId   Int    @unique @map("invoice_config_id")
+  notificationEmail String @unique @map("notification_email")
+  userId            Int    @unique @map("user_id")
+
+  InvoiceConfig InvoiceConfig @relation(fields: [invoiceConfigId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  User          User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  @@map("user_config")
+}
