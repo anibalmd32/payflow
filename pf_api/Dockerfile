@@ -6,7 +6,7 @@ FROM base AS build
 RUN apk update && apk add --no-cache dumb-init
 COPY package*.json $DIR
 COPY tsconfig.json $DIR
-COPY src $DIR/src
+COPY src $DIR
 RUN npm ci
 RUN npm run build && npm prune --production
 
