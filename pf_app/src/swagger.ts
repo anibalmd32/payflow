@@ -24,12 +24,7 @@ const swaggerUiOptions = {
 	customfavIcon: "/favicon.svg",
 }
 
-/**
- * Sets up and returns the swagger-ui-express middleware.
- *
- * @param {any} app - the Express application
- * @return {void}
- */
+// Sets up and returns the swagger-ui-express middleware
 export const swaggerDocs = (app: any) => {
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions))
 }
