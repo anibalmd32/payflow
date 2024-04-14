@@ -13,19 +13,22 @@ import { serverLogger } from './libs/logger'
 const app = express()
 
 // * INITIAL MIDDLEWARES
+app.use(express.json())
 app.use(cors())
 app.use(morgan(env === 'dev' ? 'dev' : 'common'))
 app.use(express.static('public'))
 
 // * API ROOT ROUTE
 app.get('/api/v1/', (req, res) => {
-	res.status(200).end('PayFlow API version 1.0.0')
+	res.json({ message: 'PayFlow API version 1.0.0' })
 })
 
 // * SERVER SETUP
-app.listen(
+const server = app.listen(
 	serverConfig,
 	env === 'dev'
 		? serverLogger.devLog
 		: serverLogger.prodLog
 )
+
+export { app, server }
