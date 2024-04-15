@@ -7,4 +7,4 @@ const service = new SubsService({ repository: dbClient.subscription })
 const controller = new SubsController({ service })
 const subsModule = new SubsRouter({ controller })
 
-export default subsModule.getRoutes()
+export default subsModule.getRouter()

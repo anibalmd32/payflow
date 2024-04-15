@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { ISubsRouter } from "./subs.def";
 import SubsController from "./subs.controller";
+import { ModuleRouter } from "../../def";
 
-class SubsRouter implements ISubsRouter {
+class SubsRouter implements ModuleRouter {
 	private router: Router
 	private controller: SubsController
 	private baseUrl: string
@@ -18,16 +18,16 @@ class SubsRouter implements ISubsRouter {
 		this.init()
 	}
 
-	init(): void {
-		this.router.post(`${this.baseUrl}/create`, this.controller.createSubscription.bind(this.controller))
-		this.router.get(`${this.baseUrl}/get`, this.controller.getSubscriptions.bind(this.controller))
-		this.router.get(`${this.baseUrl}/filtered`, this.controller.getFilteredSubscriptions.bind(this.controller))
-		this.router.get(`${this.baseUrl}/get/:id`, this.controller.getSubscription.bind(this.controller))
-		this.router.put(`${this.baseUrl}/update/:id`, this.controller.updateSubscription.bind(this.controller))
-		this.router.delete(`${this.baseUrl}/delete/:id`, this.controller.deleteSubscription.bind(this.controller))
+	private init(): void {
+		this.router.post(`${this.baseUrl}/create`, this.controller.createItem.bind(this.controller))
+		this.router.get(`${this.baseUrl}/get`, this.controller.getItems.bind(this.controller))
+		this.router.get(`${this.baseUrl}/filtered`, this.controller.getFilteredItems.bind(this.controller))
+		this.router.get(`${this.baseUrl}/get/:id`, this.controller.getItem.bind(this.controller))
+		this.router.put(`${this.baseUrl}/update/:id`, this.controller.updateItem.bind(this.controller))
+		this.router.delete(`${this.baseUrl}/delete/:id`, this.controller.deleteItem.bind(this.controller))
 	}
 
-	public getRoutes(): Router {
+	public getRouter(): Router {
 		return this.router
 	}
 }
