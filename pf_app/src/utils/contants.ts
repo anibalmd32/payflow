@@ -7,10 +7,14 @@ const serverConfig = {
 	port: process.env.PORT ?? 8080
 }
 const dbClient = new PrismaClient()
-const env: NodeEnv = process.env.NODE_DEV ?? 'dev' 
+const env: NodeEnv = process.env.NODE_DEV ?? 'dev'
+const secret = process.env.SECRET ?? 'secret'
+const salt = Number(process.env.SALT) ?? 10
 
 export {
 	serverConfig,
 	dbClient,
-	env
+	env,
+	secret,
+	salt
 }

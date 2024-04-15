@@ -1,6 +1,6 @@
 import { serverConfig } from "../utils/contants"
 import { app } from "../app"
-import swaggerDocs from "../swagger"
+import swaggerDocs from "../middlewares/swagger"
 
 const { protocol, hostname, port } = serverConfig
 
