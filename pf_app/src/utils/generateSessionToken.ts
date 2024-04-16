@@ -6,10 +6,8 @@ const generateToken = (data: any) => {
 }
 
 const verifyToken = (token: string) => {
-	const decoded = jwt.verify(token, secret) as JwtPayload
-	const sub = decoded.sub as { id: number } | undefined
-
-	return sub
+	const decoded = jwt.verify(token, secret)
+	return decoded
 }
 
 export { generateToken, verifyToken }
