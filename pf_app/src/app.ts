@@ -3,6 +3,9 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 
+// * MIDDLEWARES
+import responseMiddleware from './middlewares/responseMiddleware'
+
 // * APP MODULES
 import subsModule from './modules/subs/subs.index'
 
@@ -10,7 +13,7 @@ import subsModule from './modules/subs/subs.index'
 import { serverConfig, env } from './utils/contants'
 
 // * LIBS
-import { serverLogger } from './libs/logger'
+import { serverLogger } from './utils/logger'
 
 // * APP INSTANCE
 const app = express()
@@ -20,6 +23,7 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan(env === 'dev' ? 'dev' : 'common'))
 app.use(express.static('public'))
+app.use(responseMiddleware)
 
 // * API ROOT ROUTE
 app.get('/api/v1/', (req, res) => {

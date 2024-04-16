@@ -1,4 +1,4 @@
-import { serverConfig } from "../utils/contants"
+import { serverConfig } from "./contants"
 import { app } from "../app"
 import swaggerDocs from "../middlewares/swagger"
 

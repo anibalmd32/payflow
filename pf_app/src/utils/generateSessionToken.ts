@@ -7,6 +7,9 @@ const generateToken = (data: any) => {
 
 const verifyToken = (token: string) => {
 	const decoded = jwt.verify(token, secret)
+	
+	if (!decoded) throw new Error('Not data in token')
+
 	return decoded
 }
 
