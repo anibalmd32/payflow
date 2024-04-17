@@ -1,6 +1,6 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import SubsController from "./subs.controller";
-import { ModuleRouter } from "../../def";
+import { ModuleRouter, AppRequest, AppResponse } from "../../def";
 
 class SubsRouter implements ModuleRouter {
 	private router: Router
@@ -19,12 +19,30 @@ class SubsRouter implements ModuleRouter {
 	}
 
 	private init(): void {
-		this.router.post(`${this.baseUrl}/create`, this.controller.createItem.bind(this.controller))
-		this.router.get(`${this.baseUrl}/get`, this.controller.getItems.bind(this.controller))
-		this.router.get(`${this.baseUrl}/filtered`, this.controller.getFilteredItems.bind(this.controller))
-		this.router.get(`${this.baseUrl}/get/:id`, this.controller.getItem.bind(this.controller))
-		this.router.put(`${this.baseUrl}/update/:id`, this.controller.updateItem.bind(this.controller))
-		this.router.delete(`${this.baseUrl}/delete/:id`, this.controller.deleteItem.bind(this.controller))
+		this.router.post(
+			`${this.baseUrl}/create`,
+			(req: Request, res: Response) => this.controller.createItem(req as AppRequest, res as AppResponse)
+		)
+		this.router.get(
+			`${this.baseUrl}/get`,
+			(req: Request, res: Response) => this.controller.getItems(req as AppRequest, res as AppResponse)
+		)
+		this.router.get(
+			`${this.baseUrl}/filtered`,
+			(req: Request, res: Response) => this.controller.getFilteredItems(req as AppRequest, res as AppResponse)
+		)
+		this.router.get(
+			`${this.baseUrl}/get/:id`,
+			(req: Request, res: Response) => this.controller.getItem(req as AppRequest, res as AppResponse)
+		)
+		this.router.put(
+			`${this.baseUrl}/update/:id`, 
+			(req: Request, res: Response) => this.controller.updateItem(req as AppRequest, res as AppResponse)
+		)
+		this.router.delete(
+			`${this.baseUrl}/delete/:id`, 
+			(req: Request, res: Response) => this.controller.deleteItem(req as AppRequest, res as AppResponse)
+		)
 	}
 
 	public getRouter(): Router {

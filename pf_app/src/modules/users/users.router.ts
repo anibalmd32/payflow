@@ -7,12 +7,14 @@ class UsersRouter implements ModuleRouter {
 	private router: Router
 	private controller: UsersController
 	private baseUrl: string
+
 	constructor(controller: UsersController) {
 		this.baseUrl = '/users'
 		this.router = Router()
 		this.controller = controller
 		this.init()
 	}
+	
 	private init(): void {
 		this.router.post(
 			`${this.baseUrl}/create`,
