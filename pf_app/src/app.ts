@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import responseMiddleware from './middlewares/responseMiddleware'
 
 // * APP MODULES
+import usersModule from './modules/users/user.index'
 import subsModule from './modules/subs/subs.index'
 
 // * UTILS
@@ -31,6 +32,7 @@ app.get('/api/v1/', (req, res) => {
 })
 
 // * API ROUTES
+app.use('/api/v1', usersModule)
 app.use('/api/v1', subsModule)
 
 // * SERVER SETUP
